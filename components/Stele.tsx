@@ -8,17 +8,22 @@ const WINDOW = "M28,330 L28,190 C28,90 105,28 210,28 C315,28 392,90 392,190 L392
 export function Stele({
   photo,
   promises,
+  onDark = false,
 }: {
   photo: { src: string; srcSet: string; alt: string };
   promises: string[];
+  onDark?: boolean;
 }) {
+  // On a dark section the stone is a shade lighter so its outline reads.
+  const stone = onDark ? "#313840" : "#23282e";
+  const wedge = onDark ? "#46505b" : "#39414a";
   return (
     <figure className="relative mx-auto w-full max-w-[360px] sm:max-w-[420px]">
       <div className="stele-rise relative aspect-[420/640] w-full">
         <svg viewBox="0 0 420 640" className="absolute inset-0 h-full w-full" aria-hidden="true" focusable="false">
           <defs>
             <pattern id="cuneiform" width="56" height="34" patternUnits="userSpaceOnUse">
-              <g fill="#39414a">
+              <g fill={wedge}>
                 <path d="M4,6 l8,3.2 l-8,3.2 Z" />
                 <path d="M22,6 l5,6 l-5,0 Z" />
                 <path d="M34,8 l8,3.2 l-8,3.2 Z" />
@@ -26,7 +31,7 @@ export function Stele({
                 <path d="M30,20 l5,6 l-5,0 Z" />
                 <path d="M44,23 l8,3.2 l-8,3.2 Z" />
               </g>
-              <g stroke="#39414a" strokeWidth="1.2">
+              <g stroke={wedge} strokeWidth="1.2">
                 <line x1="12" y1="9.2" x2="18" y2="9.2" />
                 <line x1="42" y1="11.2" x2="50" y2="11.2" />
                 <line x1="20" y1="25.2" x2="26" y2="25.2" />
@@ -36,7 +41,7 @@ export function Stele({
               <path d="M0,1 L0,0.5364 C0,0.2053 0.2115,0 0.5,0 C0.7885,0 1,0.2053 1,0.5364 L1,1 Z" />
             </clipPath>
           </defs>
-          <path d={OUTER} fill="#23282e" />
+          <path d={OUTER} fill={stone} />
           <path d={OUTER} fill="url(#cuneiform)" opacity="0.9" />
           <path d={WINDOW} fill="none" stroke="#cfa96f" strokeOpacity="0.55" strokeWidth="2" />
           <line x1="64" y1="356" x2="356" y2="356" stroke="#cfa96f" strokeOpacity="0.55" strokeWidth="1.5" />
@@ -62,12 +67,12 @@ export function Stele({
 
         {/* The carved promises. */}
         <ul
-          className="carve-in absolute inset-x-[11%] top-[59%] bottom-[6%] flex flex-col justify-center gap-5 text-center"
+          className={`carve-in absolute inset-x-[11%] top-[59%] bottom-[6%] flex flex-col justify-center text-center ${promises.length <= 2 ? "gap-2" : "gap-5"}`}
         >
           {promises.map((promise) => (
             <li
               key={promise}
-              className="font-[family-name:var(--font-display)] text-lg leading-snug text-bronze-light sm:text-xl"
+              className={`font-[family-name:var(--font-display)] leading-snug text-bronze-light ${promises.length <= 2 ? "text-2xl sm:text-3xl" : "text-lg sm:text-xl"}`}
               style={{ textShadow: "0 1px 0 rgba(0,0,0,0.6), 0 -1px 0 rgba(255,255,255,0.06)" }}
             >
               {promise}
@@ -76,7 +81,7 @@ export function Stele({
         </ul>
       </div>
       {/* Plinth */}
-      <div className="h-4 rounded-sm sm:mx-[-6%] bg-[#cfd1cb]" aria-hidden="true" />
+      <div className={`h-4 rounded-sm sm:mx-[-6%] ${onDark ? "bg-[#3d454e]" : "bg-[#cfd1cb]"}`} aria-hidden="true" />
     </figure>
   );
 }

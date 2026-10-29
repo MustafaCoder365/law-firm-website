@@ -11,10 +11,6 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
 
-<br>
-
-![Hammurabi Law — English](screenshots/hero-en.jpg)
-
 </div>
 
 > **Concept project.** Hammurabi Law is a fictional firm. Names, contact details, and dates are sample content, and the site does not give legal advice.
@@ -23,7 +19,8 @@
 
 ## ✨ Highlights
 
-- 🏛️ **An identity rooted in Iraq** — named after the Code of Hammurabi, one of the world's oldest written legal codes. The hero is a black stone stele with a real photo as its relief and the firm's promises "carved" below, over a field of cuneiform wedges.
+- 🏛️ **An identity rooted in Iraq** — named after the Code of Hammurabi, one of the world's oldest written legal codes: a black stone stele with a Baghdad photo as its relief and the firm's motto "carved" over cuneiform wedges, plus a bronze tablet of written promises in the hero
+- 🧭 **Classic masthead and interactive index** — centered firm name between split navigation, and practice areas as keyboard-accessible tabs
 - 🌍 **Full Arabic and English** — separate routes (`/ar`, `/en`), right-to-left layout for Arabic, and automatic language pick on first visit
 - ✍️ **Classic typography** — Amiri for headings (Arabic naskh and Latin serif in one family) and IBM Plex Sans Arabic for body text
 - 📷 **Real photography** — Baghdad on the Tigris, a client meeting, and partner portraits, served responsively with `srcset`
@@ -31,24 +28,18 @@
 - ♿ **Accessible** — semantic landmarks, skip link, keyboard focus styles, and reduced-motion support
 - ⚡ **Static export** — no server needed, deployed to GitHub Pages with GitHub Actions
 
-## 📸 Screenshots
-
-| Why Hammurabi |
-|---|
-| ![Story section](screenshots/story.jpg) |
-
 ## 🧭 Page sections
 
 | Section | What it does |
 |---|---|
-| **Hero** | The firm's promise, consultation and call buttons, and the stele with three written commitments |
-| **Practice areas** | Six areas, each with what it covers and who it's for |
-| **Why Hammurabi** | The story behind the name, tied to the firm's way of working |
-| **How we work** | Four steps from the first call to written updates |
-| **Partners** | Three partners with portraits, focus areas, and bar membership |
-| **Office** | Full-width Baghdad photo with address, hours, and a map link |
-| **FAQ** | Fees, foreign clients, remote follow-up, and confidentiality |
-| **Consultation** | Validated request form with phone, WhatsApp, and email |
+| **Hero** | Full-width dark masthead, wide photo, and a bronze tablet with three written promises |
+| **Practice areas** | Tabbed index: six areas, each with who it's for and typical matters |
+| **Why Hammurabi** | The stele with the firm's motto, and the story behind the name |
+| **How we work** | Horizontal timeline of four steps, from first call to written updates |
+| **Partners** | Wide rows with portrait, bio, focus, bar membership, and languages |
+| **Office** | Baghdad on the Tigris, with address, hours, and a map link set on the photo |
+| **FAQ** | All answers visible in two columns |
+| **Consultation** | Dark section with a validated request form, phone, WhatsApp, and email |
 
 ## 🛠️ Tech Stack
 
@@ -67,7 +58,7 @@
 app/
 ├── (root)/        # Language picker for "/"
 └── [lang]/        # Arabic and English pages (layout sets lang + dir)
-components/        # Header, stele, consultation form, logo
+components/        # Masthead, stele, practice tabs, consultation form, logo
 lib/content.ts     # All copy, in Arabic and English
 lib/photos.ts      # Photo IDs and responsive image helpers
 public/            # Favicon
