@@ -11,6 +11,10 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
 
+<br>
+
+![Hammurabi Law — English](screenshots/hero-en.jpg)
+
 </div>
 
 > **Concept project.** Hammurabi Law is a fictional firm. Names, contact details, and dates are sample content, and the site does not give legal advice.
@@ -26,6 +30,12 @@
 - 📝 **Consultation form** — practice-area picker, call or WhatsApp preference, Iraqi phone validation, accessible errors, and a confirmation state
 - ♿ **Accessible** — semantic landmarks, skip link, keyboard focus styles, and reduced-motion support
 - ⚡ **Static export** — no server needed, deployed to GitHub Pages with GitHub Actions
+
+## 📸 Screenshots
+
+| Why Hammurabi |
+|---|
+| ![Story section](screenshots/story.jpg) |
 
 ## 🧭 Page sections
 

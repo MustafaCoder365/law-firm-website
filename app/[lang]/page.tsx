@@ -8,6 +8,8 @@ import { photos, srcSet, unsplash } from "@/lib/photos";
 
 // A rounded "stele" top for portraits and the story photo.
 const STELE_TOP = { borderRadius: "50% 50% 6px 6px / 26% 26% 6px 6px" } as const;
+// Where each portrait's face sits in the source photo.
+const FOCUS = { karim: "50% 20%", zainab: "50% 20%", omar: "82% 22%" } as const;
 const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=Karrada%2C+Baghdad";
 
 function Wedge({ className = "" }: { className?: string }) {
@@ -170,7 +172,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   loading="lazy"
                   decoding="async"
                   className="aspect-[15/19] w-full bg-rule object-cover"
-                  style={{ ...STELE_TOP, objectPosition: "50% 20%" }}
+                  style={{ ...STELE_TOP, objectPosition: FOCUS[person.photo] }}
                 />
                 <h3 className="mt-6 text-2xl text-ink">{person.name}</h3>
                 <p className="mt-1 font-medium text-bronze">{person.role}</p>
@@ -221,7 +223,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </section>
 
         {/* FAQ */}
-        <section aria-labelledby="faq" className="mt-20 border-t border-rule bg-paper lg:mt-28">
+        <section aria-labelledby="faq" className="mt-16 border-t border-rule bg-paper lg:mt-20">
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:py-28">
             <h2 id="faq" className="text-4xl text-ink sm:text-5xl">
               {t.faq.title}
