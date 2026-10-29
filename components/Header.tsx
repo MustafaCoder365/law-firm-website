@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
-import type { Content, Locale } from "@/lib/content";
+import { Menu, Phone, X } from "lucide-react";
+import { PHONE_DISPLAY, PHONE_LINK, type Content, type Locale } from "@/lib/content";
 import { LogoMark } from "./Logo";
 
+// A classic masthead: a thin utility bar, then the firm's name centered
+// between two halves of the navigation.
 export function Header({ t, lang }: { t: Content; lang: Locale }) {
   const [open, setOpen] = useState(false);
   const other: Locale = lang === "ar" ? "en" : "ar";
@@ -17,80 +19,103 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const links = [
+  const start = [
     { href: "#practice", label: t.nav.practice },
     { href: "#approach", label: t.nav.approach },
+  ];
+  const end = [
     { href: "#team", label: t.nav.team },
     { href: "#faq", label: t.nav.faq },
   ];
+  const linkClass = "text-[0.95rem] text-limestone/80 transition-colors hover:text-bronze-light";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-rule/80 bg-limestone/90 backdrop-blur">
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
-        <a href="#top" className="flex items-center gap-2.5 text-diorite">
-          <LogoMark className="h-8 w-auto" />
-          <span className="font-[family-name:var(--font-display)] text-2xl font-bold text-ink">{t.brandLong}</span>
-        </a>
+    <header className="sticky top-0 z-40 bg-diorite text-limestone">
+      {/* Utility bar */}
+      <div className="hidden border-b border-limestone/10 sm:block">
+        <div className="mx-auto flex h-10 max-w-6xl items-center justify-between px-5 text-sm text-limestone/65 sm:px-8">
+          <span>{t.topbar.hours}</span>
+          <div className="flex items-center gap-6">
+            <a href={PHONE_LINK} className="inline-flex items-center gap-2 hover:text-limestone">
+              <Phone className="h-3.5 w-3.5" aria-hidden="true" />
+              <span dir="ltr">{PHONE_DISPLAY}</span>
+            </a>
+            <Link href={`/${other}/`} hrefLang={other} lang={other} className="hover:text-limestone">
+              {t.switchLabel}
+            </Link>
+          </div>
+        </div>
+      </div>
 
+      {/* Masthead */}
+      <div className="mx-auto grid h-20 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-6 px-5 sm:px-8">
         <nav aria-label={t.menu} className="hidden lg:block">
-          <ul className="flex items-center gap-8 text-[0.95rem] text-ink-soft">
-            {links.map((l) => (
+          <ul className="flex items-center gap-8">
+            {start.map((l) => (
               <li key={l.href}>
-                <a href={l.href} className="transition-colors hover:text-bronze">
+                <a href={l.href} className={linkClass}>
                   {l.label}
                 </a>
               </li>
             ))}
           </ul>
         </nav>
+        <span className="lg:hidden" />
 
-        <div className="hidden items-center gap-5 lg:flex">
-          <Link
-            href={`/${other}/`}
-            hrefLang={other}
-            lang={other}
-            className="text-[0.95rem] text-ink-soft transition-colors hover:text-bronze"
-          >
-            {t.switchLabel}
-          </Link>
-          <a
-            href="#contact"
-            className="rounded-md bg-diorite px-5 py-2.5 text-[0.95rem] font-medium text-limestone transition-colors hover:bg-bronze"
-          >
-            {t.nav.contact}
-          </a>
-        </div>
+        <a href="#top" className="flex flex-col items-center gap-1 text-center">
+          <span className="flex items-center gap-2.5">
+            <LogoMark className="h-7 w-auto text-[#4a535d]" />
+            <span className="font-[family-name:var(--font-display)] text-2xl font-bold leading-none">{t.brandLong}</span>
+          </span>
+        </a>
 
-        <button
-          type="button"
-          className="rounded-full p-2 text-ink lg:hidden"
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? t.close : t.menu}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-
-      {open && (
-        <nav id="mobile-nav" aria-label={t.menu} className="border-t border-rule bg-limestone lg:hidden">
-          <ul className="mx-auto flex max-w-6xl flex-col px-5 py-3 sm:px-8">
-            {links.map((l) => (
+        <div className="flex items-center justify-end gap-8">
+          <ul className="hidden items-center gap-8 lg:flex">
+            {end.map((l) => (
               <li key={l.href}>
-                <a href={l.href} onClick={() => setOpen(false)} className="block py-3 text-lg text-ink">
+                <a href={l.href} className={linkClass}>
                   {l.label}
                 </a>
               </li>
             ))}
-            <li className="mt-2 flex items-center justify-between gap-4 border-t border-rule pt-4 pb-2">
-              <Link href={`/${other}/`} hrefLang={other} lang={other} className="text-ink-soft">
+          </ul>
+          <a
+            href="#contact"
+            className="hidden rounded-[2px] border border-bronze-light px-4 py-2 text-[0.95rem] font-medium text-bronze-light transition-colors hover:bg-bronze-light hover:text-diorite xl:inline-block"
+          >
+            {t.nav.contact}
+          </a>
+          <button
+            type="button"
+            className="p-2 text-limestone lg:hidden"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? t.close : t.menu}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+      </div>
+
+      {open && (
+        <nav id="mobile-nav" aria-label={t.menu} className="border-t border-limestone/10 lg:hidden">
+          <ul className="mx-auto flex max-w-6xl flex-col px-5 py-3 sm:px-8">
+            {[...start, ...end].map((l) => (
+              <li key={l.href}>
+                <a href={l.href} onClick={() => setOpen(false)} className="block py-3 text-lg">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+            <li className="mt-2 flex items-center justify-between gap-4 border-t border-limestone/10 pt-4 pb-2">
+              <Link href={`/${other}/`} hrefLang={other} lang={other} className="text-limestone/75">
                 {t.switchLabel}
               </Link>
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="rounded-md bg-diorite px-5 py-2.5 font-medium text-limestone"
+                className="rounded-[2px] bg-bronze-light px-5 py-2.5 font-medium text-diorite"
               >
                 {t.nav.contact}
               </a>

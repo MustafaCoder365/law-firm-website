@@ -5,7 +5,7 @@ export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }
 
-export type PracticeArea = { id: string; name: string; detail: string; forWhom: string };
+export type PracticeArea = { id: string; name: string; detail: string; forWhom: string; matters: string[] };
 export type PartnerPhoto = "karim" | "zainab" | "omar";
 
 export type Content = {
@@ -18,21 +18,23 @@ export type Content = {
   menu: string;
   close: string;
   skip: string;
+  topbar: { hours: string };
   hero: {
     title: string;
+    photoCaption: string;
     lead: string;
     primary: string;
     secondary: string;
     photoAlt: string;
     promises: string[];
   };
-  practice: { title: string; lead: string; forLabel: string; items: PracticeArea[] };
-  story: { title: string; body: string[]; photoAlt: string; caption: string };
+  practice: { title: string; lead: string; forLabel: string; mattersLabel: string; cta: string; items: PracticeArea[] };
+  story: { title: string; body: string[]; photoAlt: string; caption: string; motto: string[] };
   approach: { title: string; lead: string; steps: { title: string; detail: string }[] };
   team: {
     title: string;
     lead: string;
-    items: { name: string; photo: PartnerPhoto; role: string; focus: string; bar: string }[];
+    items: { name: string; photo: PartnerPhoto; role: string; focus: string; bar: string; bio: string; languages: string }[];
   };
   office: { photoAlt: string; title: string; address: string; hours: string; directions: string };
   faq: { title: string; items: { q: string; a: string }[] };
@@ -84,7 +86,9 @@ const ar: Content = {
   menu: "القائمة",
   close: "إغلاق",
   skip: "انتقل إلى المحتوى",
+  topbar: { hours: "الأحد – الخميس، ٩ صباحاً – ٥ مساءً" },
   hero: {
+    photoCaption: "كل قضية تبدأ بجلسة نقرأ فيها وثائقك معك، سطراً سطراً.",
     title: "منذ بابل والقانون يُكتب. ونحن نكتب التزامنا لك أيضاً",
     lead: "مكتب محاماة في بغداد للشركات والعائلات. نتولى العقود والاستثمار والعقارات والأحوال الشخصية والقضايا أمام المحاكم، ونتفق على الأتعاب كتابةً قبل أن نبدأ.",
     primary: "اطلب استشارة",
@@ -100,42 +104,50 @@ const ar: Content = {
     title: "مجالات العمل",
     lead: "ستة مجالات نعمل بها يومياً أمام المحاكم والدوائر العراقية.",
     forLabel: "لمن",
+    mattersLabel: "قضايا نتولاها كثيراً",
+    cta: "ناقش قضيتك معنا",
     items: [
       {
         id: "corporate",
         name: "الشركات والعقود",
         detail: "تأسيس الشركات وتسجيلها، صياغة العقود ومراجعتها، ونزاعات الشركاء.",
         forWhom: "الشركات الناشئة والقائمة",
+        matters: ["تأسيس شركة محدودة وتسجيلها لدى مسجّل الشركات", "عقود توريد وشراكة ووكالة تجارية", "خروج شريك أو نزاع على الأرباح"],
       },
       {
         id: "investment",
         name: "الاستثمار الأجنبي",
         detail: "دخول السوق العراقية، إجازات الاستثمار، والشراكات مع جهات محلية.",
         forWhom: "الشركات الأجنبية والمستثمرون",
+        matters: ["طلب إجازة استثمار لدى هيئة الاستثمار", "تسجيل فرع لشركة أجنبية", "عقود مع شريك أو وكيل محلي"],
       },
       {
         id: "property",
         name: "العقارات والأملاك",
         detail: "نقل الملكية في التسجيل العقاري، عقود الإيجار، ونزاعات الأملاك والإزالة.",
         forWhom: "المالكون والمطوّرون والمستأجرون",
+        matters: ["نقل ملكية عقار في التسجيل العقاري", "صياغة عقد إيجار سكني أو تجاري", "دعوى تخلية أو إزالة شيوع"],
       },
       {
         id: "family",
         name: "الأحوال الشخصية",
         detail: "الزواج والطلاق والحضانة والنفقة، وتقسيم التركات وحجج الوفاة.",
         forWhom: "الأفراد والعائلات",
+        matters: ["عقد الزواج وتصديقه", "الحضانة والمشاهدة والنفقة", "حجة الوفاة والقسام الشرعي"],
       },
       {
         id: "labor",
         name: "العمل والتوظيف",
         detail: "عقود العمل، الفصل التعسفي، والضمان الاجتماعي للعمال.",
         forWhom: "أصحاب العمل والموظفون",
+        matters: ["عقود عمل للموظفين والمدراء", "تعويض عن فصل تعسفي", "تسجيل العمال في الضمان الاجتماعي"],
       },
       {
         id: "litigation",
         name: "التقاضي والتحكيم",
         detail: "التمثيل أمام محاكم البداءة والاستئناف والتمييز، وإجراءات التحكيم التجاري.",
         forWhom: "كل موكّلينا",
+        matters: ["دعاوى الديون والعقود أمام البداءة", "الطعن أمام الاستئناف والتمييز", "التحكيم في النزاعات التجارية"],
       },
     ],
   },
@@ -147,6 +159,7 @@ const ar: Content = {
     ],
     photoAlt: "مبنى تراثي من الطابوق بنوافذ مقوّسة على ضفة دجلة في بغداد",
     caption: "بغداد، حيث نعمل منذ ٢٠٠٩",
+    motto: ["ما يُكتب", "يُحاسَب عليه"],
   },
   approach: {
     title: "طريقة عملنا",
@@ -168,6 +181,8 @@ const ar: Content = {
         role: "الشريك المدير",
         focus: "الشركات والاستثمار الأجنبي",
         bar: "عضو نقابة المحامين العراقيين منذ ٢٠٠٦",
+        bio: "رافق أكثر من أربعين شركة أجنبية في دخولها السوق العراقية، من الإجازة حتى أول عقد.",
+        languages: "العربية، الإنكليزية",
       },
       {
         name: "زينب الساعدي",
@@ -175,6 +190,8 @@ const ar: Content = {
         role: "شريكة",
         focus: "الأحوال الشخصية والعقارات",
         bar: "عضو نقابة المحامين العراقيين منذ ٢٠١٠",
+        bio: "تتولى قضايا العائلات بهدوء وسرية، وتفضّل الحل بالتراضي قبل الذهاب للمحكمة.",
+        languages: "العربية، الإنكليزية",
       },
       {
         name: "عمر حداد",
@@ -182,6 +199,8 @@ const ar: Content = {
         role: "شريك",
         focus: "التقاضي والتحكيم والعمل",
         bar: "عضو نقابة المحامين العراقيين منذ ٢٠١٢",
+        bio: "يترافع أمام محاكم البداءة والاستئناف والتمييز، ويمثّل الشركات في التحكيم التجاري.",
+        languages: "العربية، الإنكليزية، الكردية",
       },
     ],
   },
@@ -264,7 +283,9 @@ const en: Content = {
   menu: "Menu",
   close: "Close",
   skip: "Skip to content",
+  topbar: { hours: "Sunday – Thursday, 9 am – 5 pm" },
   hero: {
+    photoCaption: "Every case starts with a meeting where we read your documents with you, line by line.",
     title: "Law has been written down since Babylon. So are our promises to you.",
     lead: "A Baghdad law firm for companies and families. We handle contracts, investment, property, family law, and court cases, and we agree our fee with you in writing before we begin.",
     primary: "Request a consultation",
@@ -280,42 +301,50 @@ const en: Content = {
     title: "Practice areas",
     lead: "Six areas we work in every day, before Iraqi courts and government offices.",
     forLabel: "For",
+    mattersLabel: "Matters we often handle",
+    cta: "Discuss your case with us",
     items: [
       {
         id: "corporate",
         name: "Companies and contracts",
         detail: "Company formation and registration, drafting and reviewing contracts, and disputes between partners.",
         forWhom: "Startups and established companies",
+        matters: ["Forming and registering a limited company", "Supply, partnership, and commercial agency agreements", "A partner leaving, or a dispute over profits"],
       },
       {
         id: "investment",
         name: "Foreign investment",
         detail: "Entering the Iraqi market, investment licenses, and partnerships with local entities.",
         forWhom: "Foreign companies and investors",
+        matters: ["Applying for an investment license", "Registering a branch of a foreign company", "Contracts with a local partner or agent"],
       },
       {
         id: "property",
         name: "Real estate and property",
         detail: "Title transfers at the property registry, leases, and property and eviction disputes.",
         forWhom: "Owners, developers, and tenants",
+        matters: ["Transferring title at the property registry", "Drafting a residential or commercial lease", "Eviction and co-ownership partition cases"],
       },
       {
         id: "family",
         name: "Family and personal status",
         detail: "Marriage, divorce, custody, and maintenance, plus estates and inheritance certificates.",
         forWhom: "Individuals and families",
+        matters: ["Drafting and certifying a marriage contract", "Custody, visitation, and maintenance", "Death and inheritance certificates"],
       },
       {
         id: "labor",
         name: "Employment",
         detail: "Employment contracts, unfair dismissal, and workers' social security.",
         forWhom: "Employers and employees",
+        matters: ["Employment contracts for staff and executives", "Compensation for unfair dismissal", "Registering workers for social security"],
       },
       {
         id: "litigation",
         name: "Litigation and arbitration",
         detail: "Representation before first-instance, appeal, and cassation courts, and in commercial arbitration.",
         forWhom: "All our clients",
+        matters: ["Debt and contract claims at first instance", "Appeals and cassation challenges", "Arbitration of commercial disputes"],
       },
     ],
   },
@@ -327,6 +356,7 @@ const en: Content = {
     ],
     photoAlt: "A heritage brick building with arched windows on the bank of the Tigris in Baghdad",
     caption: "Baghdad, where we have practiced since 2009",
+    motto: ["What is written", "can be held to account"],
   },
   approach: {
     title: "How we work",
@@ -348,6 +378,8 @@ const en: Content = {
         role: "Managing partner",
         focus: "Companies and foreign investment",
         bar: "Member of the Iraqi Bar Association since 2006",
+        bio: "Has guided more than forty foreign companies into the Iraqi market, from license to first contract.",
+        languages: "Arabic, English",
       },
       {
         name: "Zainab Al-Saadi",
@@ -355,6 +387,8 @@ const en: Content = {
         role: "Partner",
         focus: "Family law and property",
         bar: "Member of the Iraqi Bar Association since 2010",
+        bio: "Handles family matters calmly and confidentially, and prefers a settlement before going to court.",
+        languages: "Arabic, English",
       },
       {
         name: "Omar Haddad",
@@ -362,6 +396,8 @@ const en: Content = {
         role: "Partner",
         focus: "Litigation, arbitration, and employment",
         bar: "Member of the Iraqi Bar Association since 2012",
+        bio: "Argues before first-instance, appeal, and cassation courts, and represents companies in commercial arbitration.",
+        languages: "Arabic, English, Kurdish",
       },
     ],
   },
