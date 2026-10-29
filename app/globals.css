@@ -1,0 +1,120 @@
+@import "tailwindcss";
+@import "@fontsource/amiri/400.css";
+@import "@fontsource/amiri/700.css";
+@import "@fontsource/ibm-plex-sans-arabic/400.css";
+@import "@fontsource/ibm-plex-sans-arabic/500.css";
+@import "@fontsource/ibm-plex-sans-arabic/600.css";
+
+/* Palette from the Code of Hammurabi stele: black diorite, limestone, bronze. */
+@theme {
+  --color-limestone: #edeeea;
+  --color-paper: #ffffff;
+  --color-rule: #d6d8d2;
+  --color-diorite: #23282e;
+  --color-diorite-soft: #39414a;
+  --color-ink: #171b20;
+  --color-ink-soft: #4f5862;
+  --color-bronze: #8f6229;
+  --color-bronze-light: #cfa96f;
+
+  --font-sans: "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-display: "Amiri", "Times New Roman", serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background: var(--color-limestone);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html[lang="ar"] body {
+    line-height: 1.8;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+
+  /* Amiri's Arabic needs room for its tall ascenders and dots. */
+  html[lang="ar"] h1,
+  html[lang="ar"] h2 {
+    line-height: 1.45;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-bronze);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* The one orchestrated moment: the stele rises from its plinth. */
+@keyframes stele-rise {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes carve-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.stele-rise {
+  animation: stele-rise 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.carve-in > * {
+  animation: carve-in 0.5s ease-out both;
+}
+.carve-in > *:nth-child(1) {
+  animation-delay: 0.9s;
+}
+.carve-in > *:nth-child(2) {
+  animation-delay: 1.1s;
+}
+.carve-in > *:nth-child(3) {
+  animation-delay: 1.3s;
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .faq-icon {
+  transform: rotate(45deg);
+}
