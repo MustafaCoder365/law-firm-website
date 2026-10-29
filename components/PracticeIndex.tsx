@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
-import type { Content } from "@/lib/content";
+import Link from "next/link";
+import type { Content, Locale } from "@/lib/content";
 
 // Practice areas as a tabbed index: names on one side, the selected area's
 // details on the other. Arrow keys move between tabs.
-export function PracticeIndex({ t }: { t: Content["practice"] }) {
+export function PracticeIndex({ t, lang }: { t: Content["practice"]; lang: Locale }) {
   const [active, setActive] = useState(0);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const area = t.items[active];
@@ -73,12 +74,20 @@ export function PracticeIndex({ t }: { t: Content["practice"] }) {
             </li>
           ))}
         </ul>
-        <a
-          href="#contact"
-          className="mt-8 inline-block rounded-[2px] bg-diorite px-6 py-3 font-medium text-limestone transition-colors hover:bg-bronze"
-        >
-          {t.cta}
-        </a>
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a
+            href="#contact"
+            className="inline-block rounded-[2px] bg-diorite px-6 py-3 font-medium text-limestone transition-colors hover:bg-bronze"
+          >
+            {t.cta}
+          </a>
+          <Link
+            href={`/${lang}/practice/${area.id}/`}
+            className="font-medium text-bronze underline decoration-bronze/40 underline-offset-4 hover:decoration-bronze"
+          >
+            {t.more}
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,16 @@ export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value);
 }
 
-export type PracticeArea = { id: string; name: string; detail: string; forWhom: string; matters: string[] };
+export type PracticeArea = {
+  id: string;
+  name: string;
+  detail: string;
+  forWhom: string;
+  matters: string[];
+  intro: string;
+  partner: PartnerPhoto;
+  faqs: { q: string; a: string }[];
+};
 export type PartnerPhoto = "karim" | "zainab" | "omar";
 
 export type Content = {
@@ -29,9 +38,36 @@ export type Content = {
     scaleLabel: string;
     promises: string[];
   };
-  practice: { title: string; lead: string; forLabel: string; mattersLabel: string; cta: string; items: PracticeArea[] };
+  practice: { title: string; lead: string; forLabel: string; mattersLabel: string; cta: string; more: string; items: PracticeArea[] };
   story: { title: string; body: string[]; photoAlt: string; caption: string; motto: string[] };
-  approach: { title: string; lead: string; steps: { title: string; detail: string }[] };
+  approach: { title: string; lead: string; scaleLabel: string; steps: { title: string; detail: string }[] };
+  estimator: {
+    title: string;
+    lead: string;
+    matter: string;
+    complexity: string;
+    levels: { id: "simple" | "standard" | "complex"; label: string; hint: string }[];
+    urgent: string;
+    urgentHint: string;
+    result: string;
+    basis: string;
+    fixed: string;
+    staged: string;
+    disclaimer: string;
+    cta: string;
+    currency: string;
+    matters: { id: string; label: string; min: number; max: number; staged: boolean }[];
+  };
+  area: {
+    back: string;
+    overview: string;
+    lead: string;
+    partnerLabel: string;
+    faqTitle: string;
+    otherAreas: string;
+    cta: string;
+    ctaLead: string;
+  };
   team: {
     title: string;
     lead: string;
@@ -108,6 +144,7 @@ const ar: Content = {
     forLabel: "لمن",
     mattersLabel: "قضايا نتولاها كثيراً",
     cta: "ناقش قضيتك معنا",
+    more: "تفاصيل هذا المجال",
     items: [
       {
         id: "corporate",
@@ -115,6 +152,12 @@ const ar: Content = {
         detail: "تأسيس الشركات وتسجيلها، صياغة العقود ومراجعتها، ونزاعات الشركاء.",
         forWhom: "الشركات الناشئة والقائمة",
         matters: ["تأسيس شركة محدودة وتسجيلها لدى مسجّل الشركات", "عقود توريد وشراكة ووكالة تجارية", "خروج شريك أو نزاع على الأرباح"],
+        intro: "تأسيس الشركة هو البداية فقط. نرافقك من اختيار نوع الشركة وتسجيلها لدى مسجّل الشركات، إلى صياغة العقود التي تحكم علاقتك بالشركاء والموردين والعملاء، وحتى حل النزاعات حين تقع. هدفنا أن تكون عقودك واضحة بما يكفي لتمنع النزاع قبل أن يبدأ.",
+        partner: "karim",
+        faqs: [
+          { q: "كم يستغرق تسجيل شركة محدودة؟", a: "عادة من أسبوعين إلى ستة أسابيع، حسب اكتمال الوثائق ونوع النشاط. نعطيك جدولاً زمنياً مكتوباً في البداية." },
+          { q: "هل تراجعون عقداً كتبه طرف آخر؟", a: "نعم. نراجعه ونشير إلى البنود التي تضرّك أو الغامضة، ونقترح صياغة بديلة تفاوض عليها." },
+        ],
       },
       {
         id: "investment",
@@ -122,6 +165,12 @@ const ar: Content = {
         detail: "دخول السوق العراقية، إجازات الاستثمار، والشراكات مع جهات محلية.",
         forWhom: "الشركات الأجنبية والمستثمرون",
         matters: ["طلب إجازة استثمار لدى هيئة الاستثمار", "تسجيل فرع لشركة أجنبية", "عقود مع شريك أو وكيل محلي"],
+        intro: "الاستثمار في العراق ممكن ومجزٍ، لكنه يحتاج من يعرف الطريق. نساعد الشركات الأجنبية في الحصول على إجازة الاستثمار، وتسجيل الفرع، واختيار الشريك المحلي المناسب، وصياغة العقود معه بما يحمي حقوقك.",
+        partner: "karim",
+        faqs: [
+          { q: "هل تحتاج الشركة الأجنبية شريكاً عراقياً؟", a: "يعتمد ذلك على القطاع وشكل التسجيل. نشرح لك الخيارات المتاحة لنشاطك تحديداً في الاستشارة الأولى." },
+          { q: "هل تعملون مع شركات من خارج المنطقة العربية؟", a: "نعم، ونعمل بالإنكليزية في كل المراسلات والعقود الثنائية اللغة." },
+        ],
       },
       {
         id: "property",
@@ -129,6 +178,12 @@ const ar: Content = {
         detail: "نقل الملكية في التسجيل العقاري، عقود الإيجار، ونزاعات الأملاك والإزالة.",
         forWhom: "المالكون والمطوّرون والمستأجرون",
         matters: ["نقل ملكية عقار في التسجيل العقاري", "صياغة عقد إيجار سكني أو تجاري", "دعوى تخلية أو إزالة شيوع"],
+        intro: "العقار أكبر ما يملكه أغلب الناس، والخطأ فيه مكلف. نتولى نقل الملكية في دوائر التسجيل العقاري، ونتحقق من سلامة السند قبل الشراء، ونصوغ عقود الإيجار، ونترافع في دعاوى التخلية وإزالة الشيوع.",
+        partner: "zainab",
+        faqs: [
+          { q: "ماذا تتحققون منه قبل شراء عقار؟", a: "نراجع السند في التسجيل العقاري، والحجوزات والرهون، وصحة وكالة البائع إن وُجدت، ومطابقة المساحة والموقع." },
+          { q: "هل يمكن نقل الملكية وأنا خارج العراق؟", a: "نعم، بوكالة مصدّقة من القنصلية العراقية في بلدك. نرسل لك نص الوكالة المطلوب." },
+        ],
       },
       {
         id: "family",
@@ -136,6 +191,12 @@ const ar: Content = {
         detail: "الزواج والطلاق والحضانة والنفقة، وتقسيم التركات وحجج الوفاة.",
         forWhom: "الأفراد والعائلات",
         matters: ["عقد الزواج وتصديقه", "الحضانة والمشاهدة والنفقة", "حجة الوفاة والقسام الشرعي"],
+        intro: "قضايا العائلة حساسة وشخصية. نتعامل معها بهدوء وسرية، ونبحث دائماً عن الحل بالتراضي أولاً لأنه أسرع وأقل ألماً. وحين يلزم الذهاب إلى محكمة الأحوال الشخصية، نمثّلك بكل حزم.",
+        partner: "zainab",
+        faqs: [
+          { q: "هل يمكن أن تبقى قضيتي سرية؟", a: "نعم. كل ما تخبرنا به محمي بسرية المهنة، وجلسات الأحوال الشخصية لا تُعلن تفاصيلها." },
+          { q: "كم تستغرق قضية الحضانة؟", a: "تختلف كثيراً، لكن أغلبها يحسم خلال ثلاثة إلى ستة أشهر. نخبرك بتقدير واقعي بعد مراجعة وضعك." },
+        ],
       },
       {
         id: "labor",
@@ -143,6 +204,12 @@ const ar: Content = {
         detail: "عقود العمل، الفصل التعسفي، والضمان الاجتماعي للعمال.",
         forWhom: "أصحاب العمل والموظفون",
         matters: ["عقود عمل للموظفين والمدراء", "تعويض عن فصل تعسفي", "تسجيل العمال في الضمان الاجتماعي"],
+        intro: "علاقة العمل الواضحة تحمي صاحب العمل والموظف معاً. نصوغ عقود العمل وأنظمة الشركة الداخلية، ونمثّل الطرفين في نزاعات الفصل والأجور والتعويضات، ونساعد في تسجيل العمال في الضمان الاجتماعي.",
+        partner: "omar",
+        faqs: [
+          { q: "هل تمثّلون الموظفين أم أصحاب العمل؟", a: "الاثنين، لكن ليس في نفس القضية. نتحقق من تعارض المصالح قبل قبول أي ملف." },
+          { q: "فُصلت من عملي، ماذا أفعل أولاً؟", a: "احتفظ بكل الوثائق: العقد، كتاب الفصل، وكشوف الرواتب. ثم اتصل بنا سريعاً لأن بعض الطعون لها مدد قانونية قصيرة." },
+        ],
       },
       {
         id: "litigation",
@@ -150,6 +217,12 @@ const ar: Content = {
         detail: "التمثيل أمام محاكم البداءة والاستئناف والتمييز، وإجراءات التحكيم التجاري.",
         forWhom: "كل موكّلينا",
         matters: ["دعاوى الديون والعقود أمام البداءة", "الطعن أمام الاستئناف والتمييز", "التحكيم في النزاعات التجارية"],
+        intro: "حين يصل النزاع إلى المحكمة، تحتاج من يعرف القاعة جيداً. نترافع أمام محاكم البداءة والاستئناف والتمييز، ونمثّل الشركات في التحكيم التجاري، ونبدأ دائماً بتقييم صريح لفرصك وكلفة كل طريق.",
+        partner: "omar",
+        faqs: [
+          { q: "هل تنصحونني دائماً بالذهاب إلى المحكمة؟", a: "لا. نخبرك بصراحة إن كانت التسوية أفضل لك من حيث الوقت والكلفة والنتيجة المتوقعة." },
+          { q: "كم تستغرق الدعوى أمام محكمة البداءة؟", a: "غالباً من ستة أشهر إلى سنة، وقد تطول مع الاستئناف والتمييز. نحدّثك كتابةً عند كل جلسة." },
+        ],
       },
     ],
   },
@@ -164,14 +237,54 @@ const ar: Content = {
     motto: ["ما يُكتب", "يُحاسَب عليه"],
   },
   approach: {
-    title: "طريقة عملنا",
+    title: "نزن كل قضية قبل أن نبدأ",
     lead: "من أول اتصال حتى إغلاق الملف، تعرف أين وصلت قضيتك وكم ستكلّف.",
+    scaleLabel: "ميزان يميل مع كل خطوة ويتوازن في النهاية",
     steps: [
       { title: "اتصال أول مجاني", detail: "خمس عشرة دقيقة نسمع فيها مشكلتك ونخبرك إن كانت من اختصاصنا." },
       { title: "استشارة وتقييم", detail: "نراجع وثائقك ونشرح لك خياراتك القانونية وفرص كل خيار بصراحة." },
       { title: "اتفاق مكتوب", detail: "كتاب توكيل يحدد نطاق العمل والأتعاب وطريقة الدفع. لا نبدأ قبل توقيعك." },
       { title: "العمل والمتابعة", detail: "تقرير مكتوب كل أسبوعين، ومحامٍ واحد مسؤول عن ملفك تتصل به مباشرة." },
     ],
+  },
+  estimator: {
+    title: "تقدير الأتعاب",
+    lead: "اختر نوع القضية ودرجة تعقيدها لترى نطاقاً تقريبياً قبل أن تتصل بنا.",
+    matter: "نوع القضية",
+    complexity: "درجة التعقيد",
+    levels: [
+      { id: "simple", label: "بسيطة", hint: "وثائق كاملة وطرف واحد" },
+      { id: "standard", label: "متوسطة", hint: "مفاوضات أو أكثر من طرف" },
+      { id: "complex", label: "معقدة", hint: "نزاع قائم أو جهات متعددة" },
+    ],
+    urgent: "مستعجلة",
+    urgentHint: "نبدأ خلال ٤٨ ساعة",
+    result: "الأتعاب التقديرية",
+    basis: "طريقة الدفع",
+    fixed: "أجر ثابت",
+    staged: "على مراحل",
+    disclaimer: "أرقام توضيحية لموقع تجريبي. في مكتب حقيقي، تُحدَّد الأتعاب بعد الاستشارة وتُكتب في كتاب التوكيل.",
+    cta: "اطلب استشارة لتقدير دقيق",
+    currency: "د.ع",
+    matters: [
+      { id: "contract", label: "صياغة عقد أو مراجعته", min: 250000, max: 750000, staged: false },
+      { id: "company", label: "تأسيس شركة", min: 1500000, max: 3000000, staged: false },
+      { id: "investment", label: "إجازة استثمار", min: 4000000, max: 10000000, staged: true },
+      { id: "property", label: "نقل ملكية عقار", min: 500000, max: 1500000, staged: false },
+      { id: "family", label: "قضية أحوال شخصية", min: 1000000, max: 3000000, staged: true },
+      { id: "labor", label: "نزاع عمل", min: 750000, max: 2000000, staged: true },
+      { id: "court", label: "دعوى أمام المحكمة", min: 2500000, max: 8000000, staged: true },
+    ],
+  },
+  area: {
+    back: "كل مجالات العمل",
+    overview: "نظرة عامة",
+    lead: "مجال عمل",
+    partnerLabel: "الشريك المسؤول",
+    faqTitle: "أسئلة عن هذا المجال",
+    otherAreas: "مجالات أخرى",
+    cta: "اطلب استشارة",
+    ctaLead: "الاتصال الأول مجاني، ونرد خلال يوم عمل واحد.",
   },
   team: {
     title: "الشركاء",
@@ -306,6 +419,7 @@ const en: Content = {
     forLabel: "For",
     mattersLabel: "Matters we often handle",
     cta: "Discuss your case with us",
+    more: "More about this area",
     items: [
       {
         id: "corporate",
@@ -313,6 +427,12 @@ const en: Content = {
         detail: "Company formation and registration, drafting and reviewing contracts, and disputes between partners.",
         forWhom: "Startups and established companies",
         matters: ["Forming and registering a limited company", "Supply, partnership, and commercial agency agreements", "A partner leaving, or a dispute over profits"],
+        intro: "Forming a company is only the start. We guide you from choosing the right company type and registering it with the Companies Registrar, to drafting the contracts that govern your relationships with partners, suppliers, and customers, and resolving disputes when they arise. Our aim is contracts clear enough to prevent disputes before they start.",
+        partner: "karim",
+        faqs: [
+          { q: "How long does it take to register a limited company?", a: "Usually two to six weeks, depending on your documents and the type of business. We give you a written timeline at the start." },
+          { q: "Will you review a contract the other side wrote?", a: "Yes. We review it, flag clauses that hurt you or are unclear, and suggest alternative wording you can negotiate." },
+        ],
       },
       {
         id: "investment",
@@ -320,6 +440,12 @@ const en: Content = {
         detail: "Entering the Iraqi market, investment licenses, and partnerships with local entities.",
         forWhom: "Foreign companies and investors",
         matters: ["Applying for an investment license", "Registering a branch of a foreign company", "Contracts with a local partner or agent"],
+        intro: "Investing in Iraq is possible and rewarding, but it takes someone who knows the way. We help foreign companies obtain investment licenses, register branches, choose the right local partner, and draft contracts that protect their rights.",
+        partner: "karim",
+        faqs: [
+          { q: "Does a foreign company need an Iraqi partner?", a: "It depends on the sector and the form of registration. We explain the options for your specific activity in the first consultation." },
+          { q: "Do you work with companies from outside the Arab region?", a: "Yes, and we work in English for all correspondence and bilingual contracts." },
+        ],
       },
       {
         id: "property",
@@ -327,6 +453,12 @@ const en: Content = {
         detail: "Title transfers at the property registry, leases, and property and eviction disputes.",
         forWhom: "Owners, developers, and tenants",
         matters: ["Transferring title at the property registry", "Drafting a residential or commercial lease", "Eviction and co-ownership partition cases"],
+        intro: "Property is the largest thing most people own, and mistakes are costly. We handle title transfers at the property registry, check the deed before you buy, draft leases, and represent clients in eviction and co-ownership cases.",
+        partner: "zainab",
+        faqs: [
+          { q: "What do you check before a property purchase?", a: "The deed at the property registry, any liens or mortgages, the validity of the seller’s power of attorney if there is one, and that the area and location match." },
+          { q: "Can I transfer property while outside Iraq?", a: "Yes, with a power of attorney certified by the Iraqi consulate in your country. We send you the exact wording required." },
+        ],
       },
       {
         id: "family",
@@ -334,6 +466,12 @@ const en: Content = {
         detail: "Marriage, divorce, custody, and maintenance, plus estates and inheritance certificates.",
         forWhom: "Individuals and families",
         matters: ["Drafting and certifying a marriage contract", "Custody, visitation, and maintenance", "Death and inheritance certificates"],
+        intro: "Family matters are sensitive and personal. We handle them calmly and confidentially, and always look for an agreed settlement first, because it is faster and less painful. When the personal status court is needed, we represent you firmly.",
+        partner: "zainab",
+        faqs: [
+          { q: "Can my case stay confidential?", a: "Yes. Everything you tell us is protected by professional confidentiality, and personal status hearings are not made public." },
+          { q: "How long does a custody case take?", a: "It varies a lot, but most are decided within three to six months. We give you a realistic estimate once we’ve reviewed your situation." },
+        ],
       },
       {
         id: "labor",
@@ -341,6 +479,12 @@ const en: Content = {
         detail: "Employment contracts, unfair dismissal, and workers' social security.",
         forWhom: "Employers and employees",
         matters: ["Employment contracts for staff and executives", "Compensation for unfair dismissal", "Registering workers for social security"],
+        intro: "A clear employment relationship protects both employer and employee. We draft employment contracts and internal policies, represent both sides in dismissal, wage, and compensation disputes, and help register workers for social security.",
+        partner: "omar",
+        faqs: [
+          { q: "Do you represent employees or employers?", a: "Both, but never in the same case. We check for conflicts of interest before taking any file." },
+          { q: "I was dismissed. What should I do first?", a: "Keep every document: your contract, the dismissal letter, and payslips. Then call us quickly, as some challenges have short legal deadlines." },
+        ],
       },
       {
         id: "litigation",
@@ -348,6 +492,12 @@ const en: Content = {
         detail: "Representation before first-instance, appeal, and cassation courts, and in commercial arbitration.",
         forWhom: "All our clients",
         matters: ["Debt and contract claims at first instance", "Appeals and cassation challenges", "Arbitration of commercial disputes"],
+        intro: "When a dispute reaches court, you need someone who knows the courtroom well. We argue before first-instance, appeal, and cassation courts, represent companies in commercial arbitration, and always start with an honest assessment of your chances and the cost of each route.",
+        partner: "omar",
+        faqs: [
+          { q: "Will you always advise going to court?", a: "No. We tell you plainly when a settlement is better for you in time, cost, and likely outcome." },
+          { q: "How long does a first-instance case take?", a: "Often six months to a year, and longer with appeal and cassation. We update you in writing after every hearing." },
+        ],
       },
     ],
   },
@@ -362,14 +512,54 @@ const en: Content = {
     motto: ["What is written", "can be held to account"],
   },
   approach: {
-    title: "How we work",
+    title: "We weigh every case before we start",
     lead: "From the first call to closing the file, you know where your case stands and what it will cost.",
+    scaleLabel: "A scale that tips with each step and balances at the end",
     steps: [
       { title: "A free first call", detail: "Fifteen minutes to hear your problem and tell you whether it's something we handle." },
       { title: "Consultation and assessment", detail: "We review your documents and explain your legal options, and the odds of each, honestly." },
       { title: "A written agreement", detail: "An engagement letter setting out the scope, the fee, and how you pay. We don't start until you sign." },
       { title: "Work and follow-up", detail: "A written update every two weeks, and one lawyer responsible for your file whom you can call directly." },
     ],
+  },
+  estimator: {
+    title: "Fee estimate",
+    lead: "Choose the type of matter and how complex it is to see a rough range before you call us.",
+    matter: "Type of matter",
+    complexity: "Complexity",
+    levels: [
+      { id: "simple", label: "Simple", hint: "Complete documents, one party" },
+      { id: "standard", label: "Standard", hint: "Negotiation or several parties" },
+      { id: "complex", label: "Complex", hint: "An active dispute or many parties" },
+    ],
+    urgent: "Urgent",
+    urgentHint: "We start within 48 hours",
+    result: "Estimated fee",
+    basis: "Payment",
+    fixed: "Fixed fee",
+    staged: "In stages",
+    disclaimer: "Sample figures for a concept site. At a real firm, the fee is set after the consultation and written into the engagement letter.",
+    cta: "Request a consultation for an exact quote",
+    currency: "IQD",
+    matters: [
+      { id: "contract", label: "Drafting or reviewing a contract", min: 250000, max: 750000, staged: false },
+      { id: "company", label: "Forming a company", min: 1500000, max: 3000000, staged: false },
+      { id: "investment", label: "Investment license", min: 4000000, max: 10000000, staged: true },
+      { id: "property", label: "Property title transfer", min: 500000, max: 1500000, staged: false },
+      { id: "family", label: "Family law case", min: 1000000, max: 3000000, staged: true },
+      { id: "labor", label: "Employment dispute", min: 750000, max: 2000000, staged: true },
+      { id: "court", label: "Court case", min: 2500000, max: 8000000, staged: true },
+    ],
+  },
+  area: {
+    back: "All practice areas",
+    overview: "Overview",
+    lead: "Practice area",
+    partnerLabel: "Responsible partner",
+    faqTitle: "Questions about this area",
+    otherAreas: "Other areas",
+    cta: "Request a consultation",
+    ctaLead: "The first call is free, and we reply within one working day.",
   },
   team: {
     title: "Partners",

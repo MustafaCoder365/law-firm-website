@@ -8,7 +8,18 @@ import { LogoMark } from "./Logo";
 
 // A classic masthead: a thin utility bar, then the firm's name centered
 // between two halves of the navigation.
-export function Header({ t, lang }: { t: Content; lang: Locale }) {
+export function Header({
+  t,
+  lang,
+  base = "",
+  switchHref,
+}: {
+  t: Content;
+  lang: Locale;
+  // Prefix for in-page links when the header is used on another page.
+  base?: string;
+  switchHref?: string;
+}) {
   const [open, setOpen] = useState(false);
   const other: Locale = lang === "ar" ? "en" : "ar";
 
@@ -20,12 +31,12 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
   }, [open]);
 
   const start = [
-    { href: "#practice", label: t.nav.practice },
-    { href: "#approach", label: t.nav.approach },
+    { href: `${base}#practice`, label: t.nav.practice },
+    { href: `${base}#approach`, label: t.nav.approach },
   ];
   const end = [
-    { href: "#team", label: t.nav.team },
-    { href: "#faq", label: t.nav.faq },
+    { href: `${base}#team`, label: t.nav.team },
+    { href: `${base}#faq`, label: t.nav.faq },
   ];
   const linkClass = "text-[0.95rem] text-limestone/80 transition-colors hover:text-bronze-light";
 
@@ -40,7 +51,7 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
               <Phone className="h-3.5 w-3.5" aria-hidden="true" />
               <span dir="ltr">{PHONE_DISPLAY}</span>
             </a>
-            <Link href={`/${other}/`} hrefLang={other} lang={other} className="hover:text-limestone">
+            <Link href={switchHref ?? `/${other}/`} hrefLang={other} lang={other} className="hover:text-limestone">
               {t.switchLabel}
             </Link>
           </div>
@@ -62,7 +73,7 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
         </nav>
         <span className="lg:hidden" />
 
-        <a href="#top" className="flex flex-col items-center gap-1 text-center">
+        <a href={`${base}#top`} className="flex flex-col items-center gap-1 text-center">
           <span className="flex items-center gap-2.5">
             <LogoMark className="h-7 w-auto text-[#4a535d]" />
             <span className="font-[family-name:var(--font-display)] text-2xl font-bold leading-none">{t.brandLong}</span>
@@ -80,7 +91,7 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
             ))}
           </ul>
           <a
-            href="#contact"
+            href={`${base}#contact`}
             className="hidden rounded-[2px] border border-bronze-light px-4 py-2 text-[0.95rem] font-medium text-bronze-light transition-colors hover:bg-bronze-light hover:text-diorite xl:inline-block"
           >
             {t.nav.contact}
@@ -109,11 +120,11 @@ export function Header({ t, lang }: { t: Content; lang: Locale }) {
               </li>
             ))}
             <li className="mt-2 flex items-center justify-between gap-4 border-t border-limestone/10 pt-4 pb-2">
-              <Link href={`/${other}/`} hrefLang={other} lang={other} className="text-limestone/75">
+              <Link href={switchHref ?? `/${other}/`} hrefLang={other} lang={other} className="text-limestone/75">
                 {t.switchLabel}
               </Link>
               <a
-                href="#contact"
+                href={`${base}#contact`}
                 onClick={() => setOpen(false)}
                 className="rounded-[2px] bg-bronze-light px-5 py-2.5 font-medium text-diorite"
               >

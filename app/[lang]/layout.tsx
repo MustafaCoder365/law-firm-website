@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { content, isLocale, locales } from "@/lib/content";
+import { introScript } from "@/components/Intro";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -37,7 +38,10 @@ export default async function LangLayout({
   const t = content[lang];
 
   return (
-    <html lang={lang} dir={t.dir}>
+    <html lang={lang} dir={t.dir} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );

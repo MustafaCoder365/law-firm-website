@@ -1,5 +1,9 @@
 import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { ConsultationForm } from "@/components/ConsultationForm";
+import { FeeEstimator } from "@/components/FeeEstimator";
+import { Intro } from "@/components/Intro";
+import { Ribbons } from "@/components/Ribbons";
+import { WeighScene } from "@/components/WeighScene";
 import { Header } from "@/components/Header";
 import { LogoMark } from "@/components/Logo";
 import { PracticeIndex } from "@/components/PracticeIndex";
@@ -51,6 +55,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       >
         {t.skip}
       </a>
+      <Intro name={t.brandLong} />
       <Header t={t} lang={lang} />
 
       <main id="main">
@@ -82,7 +87,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </div>
             </div>
             {/* 3D scale of justice: turns and settles into balance as you scroll. */}
-            <div className="relative -mx-5 h-[24rem] sm:mx-0 sm:h-[30rem] lg:h-[38rem] xl:-me-20">
+            <div className="relative -mx-5 h-[24rem] min-w-0 overflow-hidden sm:mx-0 sm:h-[30rem] lg:h-[38rem] lg:overflow-visible xl:-me-20">
               <div
                 aria-hidden="true"
                 className="absolute inset-x-[10%] top-[12%] bottom-[8%] rounded-full bg-[radial-gradient(closest-side,rgba(207,169,111,0.16),transparent)]"
@@ -121,70 +126,25 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           </figure>
         </section>
 
+        <Ribbons first={t.practice.items.map((a) => a.name)} second={t.hero.promises} />
+
         {/* Practice areas: a tabbed index. */}
         <section aria-labelledby="practice" className="bg-paper">
           <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
             <CenteredHeading id="practice" title={t.practice.title} lead={t.practice.lead} />
-            <PracticeIndex t={t.practice} />
+            <PracticeIndex t={t.practice} lang={lang} />
           </div>
         </section>
 
-        {/* Why Hammurabi: the stele carries the firm's motto. */}
-        <section aria-labelledby="story" className="bg-diorite text-limestone">
-          <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:py-28">
-            <Stele
-              photo={{
-                src: unsplash(photos.heritage, 800, 680),
-                srcSet: srcSet(photos.heritage, [400, 800, 1100], 0.85),
-                alt: t.story.photoAlt,
-              }}
-              promises={t.story.motto}
-              onDark
-            />
-            <div>
-              <Wedges className="h-3 w-auto text-bronze-light" />
-              <h2 id="story" className="mt-5 text-4xl sm:text-5xl">
-                {t.story.title}
-              </h2>
-              <div className="mt-8 space-y-5 text-lg text-limestone/75">
-                {t.story.body.map((p) => (
-                  <p key={p} className="max-w-[58ch]">
-                    {p}
-                  </p>
-                ))}
-              </div>
-              <p className="mt-8 border-t border-limestone/15 pt-5 text-sm text-limestone/55">{t.story.caption}</p>
-            </div>
-          </div>
-        </section>
-
-        {/* How we work: a horizontal timeline, since it's a real sequence. */}
-        <section aria-labelledby="approach" className="bg-limestone">
-          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
-            <CenteredHeading id="approach" title={t.approach.title} lead={t.approach.lead} />
-            <ol className="relative mt-16 grid gap-10 lg:grid-cols-4 lg:gap-8">
-              {/* The connecting line. */}
-              <span
-                aria-hidden="true"
-                className="absolute top-7 bottom-7 start-7 w-px bg-rule lg:inset-x-[12.5%] lg:top-7 lg:bottom-auto lg:h-px lg:w-auto"
-              />
-              {t.approach.steps.map((step, i) => (
-                <li key={step.title} className="relative grid grid-cols-[3.5rem_1fr] gap-5 lg:block lg:text-center">
-                  <span
-                    aria-hidden="true"
-                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border border-bronze bg-limestone font-[family-name:var(--font-display)] text-2xl text-bronze lg:mx-auto"
-                  >
-                    {num.format(i + 1)}
-                  </span>
-                  <div>
-                    <h3 className="text-2xl text-ink lg:mt-6">{step.title}</h3>
-                    <p className="mt-2 text-ink-soft lg:mx-auto lg:max-w-[26ch]">{step.detail}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        {/* We weigh every case: pinned scroll scene with the 3D scale. */}
+        <WeighScene
+          id="approach"
+          title={t.approach.title}
+          lead={t.approach.lead}
+          steps={t.approach.steps}
+          scaleLabel={t.approach.scaleLabel}
+          numberLocale={lang === "ar" ? "ar-IQ" : "en-US"}
+        />
 
         {/* Partners: wide rows with square portraits. */}
         <section aria-labelledby="team" className="bg-paper">
@@ -225,6 +185,45 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </li>
               ))}
             </ul>
+          </div>
+        </section>
+
+        {/* Why Hammurabi: the stele carries the firm's motto. */}
+        <section aria-labelledby="story" className="bg-diorite text-limestone">
+          <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:py-28">
+            <Stele
+              photo={{
+                src: unsplash(photos.heritage, 800, 680),
+                srcSet: srcSet(photos.heritage, [400, 800, 1100], 0.85),
+                alt: t.story.photoAlt,
+              }}
+              promises={t.story.motto}
+              onDark
+            />
+            <div>
+              <Wedges className="h-3 w-auto text-bronze-light" />
+              <h2 id="story" className="mt-5 text-4xl sm:text-5xl">
+                {t.story.title}
+              </h2>
+              <div className="mt-8 space-y-5 text-lg text-limestone/75">
+                {t.story.body.map((p) => (
+                  <p key={p} className="max-w-[58ch]">
+                    {p}
+                  </p>
+                ))}
+              </div>
+              <p className="mt-8 border-t border-limestone/15 pt-5 text-sm text-limestone/55">{t.story.caption}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Fee estimate */}
+        <section aria-labelledby="estimate" className="bg-limestone">
+          <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
+            <CenteredHeading id="estimate" title={t.estimator.title} lead={t.estimator.lead} />
+            <div className="mt-14">
+              <FeeEstimator t={t.estimator} locale={lang === "ar" ? "ar-IQ" : "en-US"} />
+            </div>
           </div>
         </section>
 

@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import type { ScaleControl } from "./ScaleScene";
 
 // A flat bronze scale: shown while the 3D scene loads, and instead of it
 // when WebGL isn't available.
@@ -36,13 +37,13 @@ function hasWebGL() {
   }
 }
 
-export function Scale({ label }: { label: string }) {
+export function Scale({ label, control }: { label: string; control?: React.RefObject<ScaleControl> }) {
   const [webgl, setWebgl] = useState<boolean | null>(null);
   useEffect(() => setWebgl(hasWebGL()), []);
 
   return (
     <div role="img" aria-label={label} className="relative h-full w-full">
-      {webgl ? <ScaleScene /> : <ScaleFallback />}
+      {webgl ? <ScaleScene control={control} /> : <ScaleFallback />}
     </div>
   );
 }

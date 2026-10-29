@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 // A bronze scale of justice built from primitives (no model files).
 // It rises in on load, sways while the case is "open", follows the
@@ -16,6 +16,68 @@ const HANG = 1.55; // distance from beam end down to the pan rim
 const bronze = new THREE.MeshStandardMaterial({ color: "#b98b4c", metalness: 1, roughness: 0.3 });
 const darkBronze = new THREE.MeshStandardMaterial({ color: "#8a6331", metalness: 1, roughness: 0.4 });
 const stone = new THREE.MeshStandardMaterial({ color: "#2d343c", metalness: 0.15, roughness: 0.55 });
+
+// A soft round shadow drawn once into a small texture: far cheaper than a
+// real-time contact shadow, and the base is round anyway.
+function GroundShadow() {
+  const texture = useMemo(() => {
+    const c = document.createElement("canvas");
+    c.width = c.height = 128;
+    const g = c.getContext("2d")!;
+    const grad = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+    grad.addColorStop(0, "rgba(0,0,0,0.6)");
+    grad.addColorStop(0.55, "rgba(0,0,0,0.25)");
+    grad.addColorStop(1, "rgba(0,0,0,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(c);
+  }, []);
+  return (
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.001, 0]}>
+      <planeGeometry args={[3.6, 3.6]} />
+      <meshBasicMaterial map={texture} transparent depthWrite={false} />
+    </mesh>
+  );
+}
+
+// Studio reflections for the bronze, computed once when the scene starts
+// (a live environment re-rendered every frame was the main cost).
+function StudioEnvironment() {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  useEffect(() => {
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const room = new RoomEnvironment();
+    const env = pmrem.fromScene(room, 0.04).texture;
+    scene.environment = env;
+    scene.environmentIntensity = 0.9;
+    return () => {
+      scene.environment = null;
+      env.dispose();
+      pmrem.dispose();
+      room.dispose();
+    };
+  }, [gl, scene]);
+  return null;
+}
+
+// Renders frames only while the scene is on screen. (Switching the canvas
+// frameloop prop doesn't reliably stop its loop once it has started, so the
+// canvas runs "on demand" and this asks for each frame.)
+function FrameDriver({ active }: { active: boolean }) {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    if (!active) return;
+    let id = 0;
+    const tick = () => {
+      invalidate();
+      id = requestAnimationFrame(tick);
+    };
+    id = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(id);
+  }, [active, invalidate]);
+  return null;
+}
 
 function easeOutCubic(x: number) {
   return 1 - Math.pow(1 - x, 3);
@@ -59,7 +121,28 @@ function Pan() {
   );
 }
 
-function Scale({ progress, pointer, reduced }: { progress: React.RefObject<number>; pointer: React.RefObject<THREE.Vector2>; reduced: boolean }) {
+export type ScaleControl = { rotation: number; tilt: number };
+
+function Scale({
+  progress,
+  pointer,
+  reduced,
+  control,
+}: {
+  progress: React.RefObject<number>;
+  pointer: React.RefObject<THREE.Vector2>;
+  reduced: boolean;
+  control?: React.RefObject<ScaleControl>;
+}) {
+  // Wait for the intro curtain on a first visit.
+  const [delay] = useState(() =>
+    typeof document !== "undefined" &&
+    document.documentElement.dataset.intro !== "seen" &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+    !control
+      ? 1.9
+      : 0,
+  );
   const root = useRef<THREE.Group>(null);
   const beam = useRef<THREE.Group>(null);
   const left = useRef<THREE.Group>(null);
@@ -69,7 +152,7 @@ function Scale({ progress, pointer, reduced }: { progress: React.RefObject<numbe
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
     if (start.current === null) start.current = t;
-    const intro = reduced ? 1 : easeOutCubic(Math.min(1, (t - start.current) / 1.6));
+    const intro = reduced ? 1 : easeOutCubic(Math.min(1, Math.max(0, (t - start.current - delay) / 1.6)));
     const p = progress.current ?? 0;
     const px = pointer.current?.x ?? 0;
     const py = pointer.current?.y ?? 0;
@@ -79,14 +162,18 @@ function Scale({ progress, pointer, reduced }: { progress: React.RefObject<numbe
       const s = 0.85 + 0.15 * intro;
       root.current.scale.setScalar(s);
       // Turn with scroll, plus a little pointer parallax.
-      const targetY = -0.45 + p * Math.PI * 0.85 + px * 0.25;
+      const targetY = control?.current
+        ? control.current.rotation + px * 0.15
+        : -0.45 + p * Math.PI * 0.85 + px * 0.25;
       root.current.rotation.y = THREE.MathUtils.lerp(root.current.rotation.y, targetY, 0.08);
       root.current.rotation.x = THREE.MathUtils.lerp(root.current.rotation.x, -py * 0.08, 0.08);
     }
 
     // Unbalanced at first, settling to level as you scroll.
     const sway = reduced ? 0 : Math.sin(t * 0.9) * 0.05;
-    const tilt = (0.22 + sway) * (1 - p) * intro;
+    const tilt = control?.current
+      ? (control.current.tilt + sway * 0.4) * intro
+      : (0.22 + sway) * (1 - p) * intro;
     if (beam.current) beam.current.rotation.z = THREE.MathUtils.lerp(beam.current.rotation.z, tilt, 0.1);
     const angle = beam.current?.rotation.z ?? 0;
     // Pans hang straight down whatever the beam does.
@@ -148,7 +235,7 @@ function Scale({ progress, pointer, reduced }: { progress: React.RefObject<numbe
   );
 }
 
-export default function ScaleScene() {
+export default function ScaleScene({ control }: { control?: React.RefObject<ScaleControl> }) {
   const wrap = useRef<HTMLDivElement>(null);
   const progress = useRef(0);
   const pointer = useRef(new THREE.Vector2());
@@ -185,8 +272,8 @@ export default function ScaleScene() {
   return (
     <div ref={wrap} className="h-full w-full">
       <Canvas
-        frameloop={visible ? "always" : "never"}
-        dpr={[1, 2]}
+        frameloop="demand"
+        dpr={[1, 1.5]}
         camera={{ position: [0, 2.4, 9.2], fov: 34 }}
         gl={{ antialias: true, alpha: true }}
         onCreated={({ camera }) => camera.lookAt(0, 1.9, 0)}
@@ -195,13 +282,10 @@ export default function ScaleScene() {
         <directionalLight position={[3, 6, 4]} intensity={2.2} color="#ffe2b8" />
         <directionalLight position={[-4, 3, -3]} intensity={1.2} color="#9fb3c8" />
         {/* Studio reflections built in place, so nothing is downloaded. */}
-        <Environment resolution={256}>
-          <Lightformer form="rect" intensity={3} color="#fff1dc" position={[0, 5, 3]} scale={[8, 2, 1]} />
-          <Lightformer form="rect" intensity={1.5} color="#cfa96f" position={[-5, 2, 1]} rotation-y={Math.PI / 2} scale={[6, 4, 1]} />
-          <Lightformer form="rect" intensity={1} color="#8fa3b8" position={[5, 1, -2]} rotation-y={-Math.PI / 2} scale={[6, 4, 1]} />
-        </Environment>
-        <Scale progress={progress} pointer={pointer} reduced={reduced} />
-        <ContactShadows position={[0, 0, 0]} opacity={0.55} scale={6} blur={2.4} far={2} color="#000000" />
+<StudioEnvironment />
+        <Scale progress={progress} pointer={pointer} reduced={reduced} control={control} />
+        <GroundShadow />
+        <FrameDriver active={visible} />
       </Canvas>
     </div>
   );

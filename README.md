@@ -22,6 +22,11 @@
 
 - 🏛️ **An identity rooted in Iraq** — named after the Code of Hammurabi, one of the world's oldest written legal codes: a black stone stele with a Baghdad photo as its relief and the firm's motto "carved" over cuneiform wedges, plus a bronze tablet of written promises in the hero
 - ⚖️ **3D scale of justice** — a bronze scale built in Three.js (React Three Fiber) from primitives, no model files: it rises in, follows the pointer, and turns and settles into balance as you scroll. Falls back to a flat illustration without WebGL, respects reduced motion, and stops rendering off screen
+- 📜 **Pinned scroll story** — "We weigh every case": the section stays on screen while you scroll, each step lights up in turn, and the 3D scale tips one way, then the other, until it balances on the last step
+- 🎬 **Opening animation** — three cuneiform wedges pressed in bronze, then the curtain lifts. Pure CSS, plays once per visit, skipped with reduced motion
+- 🎗️ **Tilted marquee ribbons** — practice areas and promises scrolling in opposite directions, RTL-aware
+- 🧮 **Fee estimator** — pick the matter type, complexity, and urgency to see an estimated range in IQD and how it's billed
+- 📄 **A page for every practice area** — 12 static pages (6 areas × 2 languages) with overview, typical matters, area FAQs, and the responsible partner
 - 🧭 **Classic masthead and interactive index** — centered firm name between split navigation, and practice areas as keyboard-accessible tabs
 - 🌍 **Full Arabic and English** — separate routes (`/ar`, `/en`), right-to-left layout for Arabic, and automatic language pick on first visit
 - ✍️ **Classic typography** — Amiri for headings (Arabic naskh and Latin serif in one family) and IBM Plex Sans Arabic for body text
@@ -34,14 +39,18 @@
 
 | Section | What it does |
 |---|---|
+| **Intro** | Bronze wedges pressed in, then the curtain lifts (first visit only) |
 | **Hero** | Dark masthead with the 3D scale of justice, a wide photo, and a bronze tablet with three written promises |
-| **Practice areas** | Tabbed index: six areas, each with who it's for and typical matters |
-| **Why Hammurabi** | The stele with the firm's motto, and the story behind the name |
-| **How we work** | Horizontal timeline of four steps, from first call to written updates |
+| **Ribbons** | Two tilted marquees crossing the page |
+| **Practice areas** | Tabbed index: six areas, each with typical matters and a link to its own page |
+| **We weigh every case** | Pinned scroll scene: four steps, with the 3D scale tipping and balancing |
 | **Partners** | Wide rows with portrait, bio, focus, bar membership, and languages |
+| **Why Hammurabi** | The stele with the firm's motto, and the story behind the name |
+| **Fee estimate** | Interactive calculator with a live estimated range |
 | **Office** | Baghdad on the Tigris, with address, hours, and a map link set on the photo |
 | **FAQ** | All answers visible in two columns |
 | **Consultation** | Dark section with a validated request form, phone, WhatsApp, and email |
+| **Practice area pages** | `/[lang]/practice/[id]`: overview, matters, FAQs, partner, and other areas |
 
 ## 🛠️ Tech Stack
 
@@ -61,7 +70,8 @@
 app/
 ├── (root)/        # Language picker for "/"
 └── [lang]/        # Arabic and English pages (layout sets lang + dir)
-components/        # Masthead, 3D scale, stele, practice tabs, consultation form, logo
+    └── practice/[id]/  # A page for each practice area
+components/        # Masthead, intro, ribbons, 3D scale + scroll scene, stele, practice tabs, fee estimator, forms
 lib/content.ts     # All copy, in Arabic and English
 lib/photos.ts      # Photo IDs and responsive image helpers
 public/            # Favicon
