@@ -28,6 +28,7 @@
   }
 
   body {
+    overflow-x: clip;
     background: var(--color-limestone);
     color: var(--color-ink);
     font-family: var(--font-sans);

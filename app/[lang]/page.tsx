@@ -3,6 +3,7 @@ import { ConsultationForm } from "@/components/ConsultationForm";
 import { Header } from "@/components/Header";
 import { LogoMark } from "@/components/Logo";
 import { PracticeIndex } from "@/components/PracticeIndex";
+import { Scale } from "@/components/Scale";
 import { Stele } from "@/components/Stele";
 import { EMAIL, PHONE_DISPLAY, PHONE_LINK, WHATSAPP_LINK, content, isLocale, type Locale } from "@/lib/content";
 import { photos, srcSet, unsplash } from "@/lib/photos";
@@ -55,16 +56,16 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <main id="main">
         {/* Hero: a full-bleed dark masthead, a wide photo, and a bronze tablet of promises. */}
         <section id="top" aria-labelledby="hero-title" className="bg-diorite text-limestone">
-          <div className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 lg:pt-24">
-            <h1
-              id="hero-title"
-              className="max-w-[20ch] text-balance text-[2.7rem] leading-[1.12] sm:text-6xl lg:text-7xl lg:leading-[1.06]"
-            >
-              {t.hero.title}
-            </h1>
-            <div className="mt-10 grid gap-8 border-t border-limestone/15 pt-8 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-              <p className="max-w-[56ch] text-lg text-limestone/75">{t.hero.lead}</p>
-              <div className="flex flex-wrap gap-4 lg:justify-end">
+          <div className="mx-auto grid max-w-6xl gap-6 px-5 pt-12 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10 lg:pt-16">
+            <div>
+              <h1
+                id="hero-title"
+                className="max-w-[16ch] text-balance text-[2.7rem] leading-[1.12] sm:text-6xl lg:text-[4.1rem] lg:leading-[1.08]"
+              >
+                {t.hero.title}
+              </h1>
+              <p className="mt-8 max-w-[52ch] border-t border-limestone/15 pt-8 text-lg text-limestone/75">{t.hero.lead}</p>
+              <div className="mt-8 flex flex-wrap gap-4">
                 <a
                   href="#contact"
                   className="rounded-[2px] bg-bronze-light px-7 py-3.5 font-semibold text-diorite transition-colors hover:bg-limestone"
@@ -80,9 +81,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </a>
               </div>
             </div>
+            {/* 3D scale of justice: turns and settles into balance as you scroll. */}
+            <div className="relative -mx-5 h-[24rem] sm:mx-0 sm:h-[30rem] lg:h-[38rem] xl:-me-20">
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-[10%] top-[12%] bottom-[8%] rounded-full bg-[radial-gradient(closest-side,rgba(207,169,111,0.16),transparent)]"
+              />
+              <Scale label={t.hero.scaleLabel} />
+            </div>
           </div>
 
-          <figure className="mx-auto mt-14 max-w-7xl px-0 sm:px-8">
+          <figure className="mx-auto mt-6 max-w-7xl px-0 sm:px-8 lg:mt-10">
             <img
               src={unsplash(photos.hero, 1600, 690)}
               srcSet={srcSet(photos.hero, [800, 1200, 1600, 2200], 0.43)}

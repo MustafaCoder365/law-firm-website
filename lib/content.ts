@@ -26,6 +26,7 @@ export type Content = {
     primary: string;
     secondary: string;
     photoAlt: string;
+    scaleLabel: string;
     promises: string[];
   };
   practice: { title: string; lead: string; forLabel: string; mattersLabel: string; cta: string; items: PracticeArea[] };
@@ -94,6 +95,7 @@ const ar: Content = {
     primary: "اطلب استشارة",
     secondary: "اتصل بالمكتب",
     photoAlt: "محامية تراجع عقداً مع موكّل في مكتب",
+    scaleLabel: "ميزان عدالة من البرونز يدور ويتوازن مع التمرير",
     promises: [
       "أتعابك مكتوبة ومتفق عليها قبل أن نبدأ",
       "تقرير مكتوب عن قضيتك كل أسبوعين",
@@ -291,6 +293,7 @@ const en: Content = {
     primary: "Request a consultation",
     secondary: "Call the office",
     photoAlt: "A lawyer reviewing a contract with a client in an office",
+    scaleLabel: "A bronze scale of justice that turns and comes into balance as you scroll",
     promises: [
       "Your fee, agreed in writing before we start",
       "A written update on your case every two weeks",

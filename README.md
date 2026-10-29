@@ -7,6 +7,7 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Visit%20Site-23282E?style=for-the-badge&logo=githubpages&logoColor=white)](https://mustafacoder365.github.io/law-firm-website/)
 
 ![Next.js](https://img.shields.io/badge/Next.js_16-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=threedotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
@@ -20,6 +21,7 @@
 ## ✨ Highlights
 
 - 🏛️ **An identity rooted in Iraq** — named after the Code of Hammurabi, one of the world's oldest written legal codes: a black stone stele with a Baghdad photo as its relief and the firm's motto "carved" over cuneiform wedges, plus a bronze tablet of written promises in the hero
+- ⚖️ **3D scale of justice** — a bronze scale built in Three.js (React Three Fiber) from primitives, no model files: it rises in, follows the pointer, and turns and settles into balance as you scroll. Falls back to a flat illustration without WebGL, respects reduced motion, and stops rendering off screen
 - 🧭 **Classic masthead and interactive index** — centered firm name between split navigation, and practice areas as keyboard-accessible tabs
 - 🌍 **Full Arabic and English** — separate routes (`/ar`, `/en`), right-to-left layout for Arabic, and automatic language pick on first visit
 - ✍️ **Classic typography** — Amiri for headings (Arabic naskh and Latin serif in one family) and IBM Plex Sans Arabic for body text
@@ -32,7 +34,7 @@
 
 | Section | What it does |
 |---|---|
-| **Hero** | Full-width dark masthead, wide photo, and a bronze tablet with three written promises |
+| **Hero** | Dark masthead with the 3D scale of justice, a wide photo, and a bronze tablet with three written promises |
 | **Practice areas** | Tabbed index: six areas, each with who it's for and typical matters |
 | **Why Hammurabi** | The stele with the firm's motto, and the story behind the name |
 | **How we work** | Horizontal timeline of four steps, from first call to written updates |
@@ -49,6 +51,7 @@
 | **Language** | TypeScript |
 | **Styling** | [Tailwind CSS 4](https://tailwindcss.com/) with design tokens |
 | **Typography** | [Amiri](https://fonts.google.com/specimen/Amiri) and [IBM Plex Sans Arabic](https://fonts.google.com/specimen/IBM+Plex+Sans+Arabic) |
+| **3D** | [Three.js](https://threejs.org/), [React Three Fiber](https://r3f.docs.pmnd.rs/), [drei](https://drei.docs.pmnd.rs/) |
 | **Icons** | [Lucide](https://lucide.dev/) |
 | **Deployment** | GitHub Pages via GitHub Actions |
 
@@ -58,7 +61,7 @@
 app/
 ├── (root)/        # Language picker for "/"
 └── [lang]/        # Arabic and English pages (layout sets lang + dir)
-components/        # Masthead, stele, practice tabs, consultation form, logo
+components/        # Masthead, 3D scale, stele, practice tabs, consultation form, logo
 lib/content.ts     # All copy, in Arabic and English
 lib/photos.ts      # Photo IDs and responsive image helpers
 public/            # Favicon
